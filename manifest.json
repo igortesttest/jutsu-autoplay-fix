@@ -1,0 +1,14 @@
+{
+  "name": "JutSuAutoplayFix",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["https://jut.su/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "/favicon.png"
+  }
+}
