@@ -81,6 +81,12 @@ const prepPlayer = (doc, iframe) => {
   );
 };
 
+const observer = new MutationObserver(([{target}]) => {
+  if(!target.classList.contains('vjs-hidden')){
+    target.click()
+  }
+});
+
 const init = () => {
   if (!document.querySelector(".video-js video")) return;
 
@@ -121,8 +127,7 @@ const init = () => {
       window.history.pushState({}, "", iframe.contentWindow.location.href);
       document.title = doc.title;
 
-      const isAutoPlay = !!doc.querySelector(".ps_class_autoplay input")
-        ?.checked;
+      const isAutoPlay = true; //!!doc.querySelector(".ps_class_autoplay input")?.checked;
 
       if (isAutoPlay) {
         play(doc, iframe);
@@ -137,6 +142,25 @@ const init = () => {
         iframe.contentWindow.addEventListener("click", (e) => {
           lastClicked = e.target;
         });
+
+        observer.observe(
+          doc.querySelector(
+            ".vjs-overlay-bottom-left"
+          ),
+          {
+            attributes: true,
+            attributeFilter: ["class"],
+          }
+        );
+        observer.observe(
+          doc.querySelector(
+            ".vjs-overlay-bottom-right"
+          ),
+          {
+            attributes: true,
+            attributeFilter: ["class"],
+          }
+        );
       }
     } catch (e) {
       const isBlocked = e.toString().includes("Blocked a frame");
